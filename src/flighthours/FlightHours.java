@@ -19,26 +19,24 @@ package flighthours;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javafx.scene.control.Button;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import view.MainFrame;
+import view.MainStage;
 
 public class FlightHours {
+
+    Button button;
 
     public static void main(String[] args) {
         //Welcome message for our Dev team
         System.out.println("Hello Team!");
         System.out.println("Welcome to CMSC495 FlightHours!");
         if (testDatabaseConnection()) {
+            System.out.println("Database connection successful");
             //Only continue if database connection is available
             createTables();
-            //Start GUI, this is needed to avoid unresponsive GUI on slow tasks
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    createAndShowGUI();
-                }
-            });
+            //Start JavaFX GUI applicaiton
+            MainStage.run();
         }
     }
 
@@ -68,9 +66,4 @@ public class FlightHours {
         util.CreateMaintenanceTable.createTable();
     }
 
-    //Create applicaiton frame and set it to visible
-    private static void createAndShowGUI() {
-        MainFrame mainView = new MainFrame();
-        mainView.setVisible(true);
-    }
 }

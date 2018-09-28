@@ -21,6 +21,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -137,8 +142,8 @@ public class AircraftDAO {
         }
     }
 
-    //Select all aircraft from database and return a DefaultTableModel object
-    public DefaultTableModel selectAllAircraft() {
+    //Select all aircraft from database and return a TableView object
+    public TableView selectAllAircraft() {
 
         ResultSet resultSet = null;
 
@@ -151,8 +156,7 @@ public class AircraftDAO {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        acTableModel = createAircraftTableModel(resultSet);
-        return acTableModel;
+        return createAircraftTableView(resultSet);
     }
 
     //Select all aircraft by station from database and return a DefaultTableModel object
@@ -379,5 +383,72 @@ public class AircraftDAO {
     public static String[] getAircraftTypeArray() {
         String[] aircraftTypeArray = {"Fixed Wing", "Rotary Wing", "UAV"};
         return aircraftTypeArray;
+    }
+
+    private TableView createAircraftTableView(ResultSet resultSet) {
+        TableView<Aircraft> aircraftTableView = new TableView<Aircraft>();
+        TableColumn aircraftIDColumn = new TableColumn("Aircraft ID");
+        aircraftIDColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("aircraftID"));
+        TableColumn tailNumberColumn = new TableColumn("Tail number");
+        tailNumberColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("tailNumber"));
+        TableColumn typeColumn = new TableColumn("Type");
+        typeColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("aircraftType"));
+        TableColumn stationColumn = new TableColumn("Station");
+        stationColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("stationString"));
+        TableColumn maxSpeedColumn = new TableColumn("Max Speed");
+        maxSpeedColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("maxSpeed"));
+        TableColumn maxAltitudeColumn = new TableColumn("Max Altitude");
+        maxAltitudeColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("maxAltitude"));
+        TableColumn totalFlightHoursColumn = new TableColumn("Total Hours");
+        totalFlightHoursColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("totalFlightHours"));
+        TableColumn maintFlagColumn = new TableColumn("Maint Flag");
+        maintFlagColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("maintenanceFlag"));
+        TableColumn maintThresholdColumn = new TableColumn("Maint Threshold");
+        maintThresholdColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("maintenanceHoursThreshold"));
+        TableColumn maintHoursColumn = new TableColumn("Maint Hours");
+        maintHoursColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("currentMaintenanceHours"));
+        TableColumn endOfServiceColumn = new TableColumn("End of Service");
+        endOfServiceColumn.setCellValueFactory(
+                new PropertyValueFactory<Aircraft, String>("endOfServiceDate"));
+        
+        aircraftTableView.getColumns().addAll(aircraftIDColumn, tailNumberColumn,
+                typeColumn, stationColumn, maxSpeedColumn, maxAltitudeColumn,
+                totalFlightHoursColumn, maintFlagColumn, maintThresholdColumn,
+                maintHoursColumn, endOfServiceColumn);
+
+        ObservableList<Aircraft> aircraftObservableList;
+        aircraftObservableList = FXCollections.observableArrayList();
+        try {
+            while (resultSet.next()) {
+                Aircraft aircraft = new Aircraft();
+                aircraft.setAircraftID(resultSet.getInt(1));
+                aircraft.setTailNumber(resultSet.getString(2));
+                aircraft.setAircraftType(resultSet.getString(3));
+                aircraft.setStationString(resultSet.getString(4));
+                aircraft.setMaxSpeed(resultSet.getInt(5));
+                aircraft.setMaxAltitude(resultSet.getInt(6));
+                aircraft.setTotalFlightHours(resultSet.getInt(7));
+                aircraft.setMaintenanceFlag(resultSet.getBoolean(8));
+                aircraft.setCurrentMaintenanceHours(resultSet.getInt(9));
+                aircraft.setMaintenanceHoursThreshold(resultSet.getInt(10));
+                aircraft.setEndOfServiceDate(resultSet.getDate(11));
+                aircraftObservableList.add(aircraft);
+            }
+            aircraftTableView.setItems(aircraftObservableList);
+        } catch (SQLException ex) {
+            System.out.println("sql error " + ex.getMessage());
+        }
+
+        return aircraftTableView;
     }
 }

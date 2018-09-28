@@ -24,6 +24,7 @@ public class Aircraft {
     private String tailNumber;
     private String aircraftType;
     private int stationID;
+    private String stationString;
     private int maxSpeed;
     private int maxAltitude;
     private int totalFlightHours;
@@ -61,6 +62,9 @@ public class Aircraft {
         this.currentMaintenanceHours = currentMaintenanceHours;
         this.maintenanceHoursThreshold = maintenanceHoursThreshold;
         this.endOfServiceDate = endOfServiceDate;
+    }
+
+    public Aircraft() {
     }
 
     //Getters and Setters
@@ -164,6 +168,15 @@ public class Aircraft {
                 + ", maxSpeed=" + maxSpeed + ", maxAltitude=" + maxAltitude
                 + ", totalFlightHours=" + totalFlightHours + ", maintenanceFlag=" + maintenanceFlag
                 + ", currentMaintenanceHours=" + currentMaintenanceHours + ", maintenanceHoursThreshold=" + maintenanceHoursThreshold + '}';
+    }
+
+
+    public String getStationString() {
+        return stationString;
+    }
+
+    public void setStationString(String stationString) {
+        this.stationString = stationString;
     }
 
 }

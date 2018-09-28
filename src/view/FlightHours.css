@@ -1,0 +1,39 @@
+#outerGridPane {
+    -fx-padding: 20;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-alignment: center;
+}
+
+
+#searchGridPane {
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-alignment: center;
+    -fx-border-radius: 15,15,15,15;
+    -fx-background-color: #efefef;
+    -fx-effect: dropshadow(gaussian,black,10,0,0,0);
+    -fx-background-radius: 5,5,5,5;
+}
+
+#titleLabel {
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-alignment: center;
+    -fx-font-size: 50;
+    -fx-font-weight: bold;
+
+}
+
+#bottom-button-box {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-alignment: center;
+
+
+}
+
